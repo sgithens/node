@@ -63,96 +63,57 @@ const char* ToCString(const v8::String::Utf8Value& value) {
 static Handle<Value> Verbose(const Arguments& args) {
   HandleScope scope;
   
-  if (args.Length() < 1) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.verbose() : error: no message argument")));
+  if (args.Length() > 0) {
+    v8::String::Utf8Value msg(args[0]);  
+    LOGV(ToCString(msg));
   }
-
-  if (!args[0]->IsString()) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.verbose() : error : message argument must be a string")));
-  }
-  
-  v8::String::Utf8Value msg(args[0]);
-  
-  LOGV(ToCString(msg));
-
   return scope.Close(Undefined());
 }
 
 static Handle<Value> Debug(const Arguments& args) {
   HandleScope scope;
   
-  if (args.Length() < 1) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.debug() : error: no message argument")));
+  if (args.Length() > 0) {
+    v8::String::Utf8Value msg(args[0]);  
+    LOGD(ToCString(msg));
   }
-
-  if (!args[0]->IsString()) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.debug() : error : message argument must be a string")));
-  }
-  
-  v8::String::Utf8Value msg(args[0]);
-  
-  LOGD(ToCString(msg));
-
   return scope.Close(Undefined());
 }
 
 static Handle<Value> Info(const Arguments& args) {
   HandleScope scope;
   
-  if (args.Length() < 1) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.info() : error: no message argument")));
+  if (args.Length() > 0) {
+    v8::String::Utf8Value msg(args[0]);  
+    LOGI(ToCString(msg));
   }
-
-  if (!args[0]->IsString()) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.info() : error : message argument must be a string")));
-  }
-  
-  v8::String::Utf8Value msg(args[0]);
-  
-  LOGI(ToCString(msg));
-
   return scope.Close(Undefined());
 }
 
 static Handle<Value> Warn(const Arguments& args) {
   HandleScope scope;
   
-  if (args.Length() < 1) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.warn() : error: no message argument")));
+  if (args.Length() > 0) {
+    v8::String::Utf8Value msg(args[0]);  
+    LOGW(ToCString(msg));
   }
-
-  if (!args[0]->IsString()) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.warn() : error : message argument must be a string")));
-  }
-  
-  v8::String::Utf8Value msg(args[0]);
-  
-  LOGW(ToCString(msg));
-
   return scope.Close(Undefined());
 }
 
 static Handle<Value> Error(const Arguments& args) {
   HandleScope scope;
   
-  if (args.Length() < 1) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.error() : error: no message argument")));
+  if (args.Length() > 0) {
+    v8::String::Utf8Value msg(args[0]);  
+    LOGE(ToCString(msg));
   }
-
-  if (!args[0]->IsString()) {
-    return ThrowException(Exception::TypeError(String::New("androidlog.error() : error : message argument must be a string")));
-  }
-  
-  v8::String::Utf8Value msg(args[0]);
-  
-  LOGE(ToCString(msg));
-
   return scope.Close(Undefined());
 }
 
 void Androidlog::Initialize(v8::Handle<v8::Object> target) {
   HandleScope scope;
 
+  NODE_SET_METHOD(target, "log", Verbose);
   NODE_SET_METHOD(target, "verbose", Verbose);
   NODE_SET_METHOD(target, "debug", Debug);
   NODE_SET_METHOD(target, "info", Info);
